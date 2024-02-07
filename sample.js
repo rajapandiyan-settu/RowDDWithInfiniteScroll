@@ -173,7 +173,6 @@ var enablecache = new ej.buttons.CheckBox({ label: 'Enable Cache', change: funct
         infiniteScrollSettings: { enableCache : args.checked }
     }, true);
     grid.freezeRefresh();
-    // grid.infiniteScrollSettings.enableCache = args.checked;
 } });
 enablecache.appendTo('#enablecache');
 
@@ -187,7 +186,6 @@ var remotedata = new ej.buttons.CheckBox({ label: 'Remote Data', change: functio
         dataSource: args.checked ? remoteData : window.orderData
     }, true);
     grid.freezeRefresh();
-    // grid.infiniteScrollSettings.enableCache = args.checked;
 } });
 remotedata.appendTo('#remotedata');
 
@@ -198,13 +196,12 @@ var frozen = new ej.buttons.CheckBox({ label: 'Frozen', change: function (args) 
         },
         groupSettings: { columns : [] },
         sortSettings: { columns: [] },
-        frozenRows: args.checked ? 2 : undefined,
+        // frozenRows: args.checked ? 2 : undefined,
         frozenColumns: args.checked ? 2 : undefined
     }, true);
     grid.freezeRefresh();
-    // grid.infiniteScrollSettings.enableCache = args.checked;
 } });
-frozen.appendTo('#frozen');
+// frozen.appendTo('#frozen');
 
 var enablelazyload = new ej.buttons.CheckBox({ label: 'Lazy Load', change: function (args) {
     grid.clearGrouping();
@@ -216,7 +213,6 @@ var enablelazyload = new ej.buttons.CheckBox({ label: 'Lazy Load', change: funct
         sortSettings: { columns: [] }
     }, true);
     grid.freezeRefresh();
-    // grid.groupSettings.enableLazyLoading = args.checked;
 } });
 enablelazyload.appendTo('#enablelazyload');
 
