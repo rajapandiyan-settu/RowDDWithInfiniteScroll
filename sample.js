@@ -41,7 +41,7 @@ var grid = new ej.grids.Grid({
     rowDrop: function(args) {
         // debugger;
     },
-    groupSettings: { allowReordering: true},
+    groupSettings: { allowReordering: false },
     // pageSettings: { pageCount: 5, pageSizes: true },
     editSettings: { allowAdding: true, allowEditing: true, allowDeleting: true },// , mode: 'Dialog'
     toolbar: ['Add', 'Delete', 'Update', 'Cancel', 'Search'],
@@ -51,9 +51,8 @@ var grid = new ej.grids.Grid({
         { field: 'Freight', headerText: 'Frieght', width: 120, format: 'C2', editType: 'numericedit', textAlign: 'Right' },
         { field: 'OrderDate', headerText: 'Order Date', width: 120, format: 'yMd', editType: 'datepickeredit', textAlign: 'Right' },
         { field: 'ShipCity', headerText: 'Ship City', width: 120, template: '<button>${ShipCity}</button>',  validationRules: { required: true, minLength: 3, maxLength: 20 } },
-        { field: 'ShipName', headerText: 'Ship Name', width: 120, clipMode: 'EllipsisWithTooltip' },
+        { field: 'ShipName', headerText: 'Ship Name', width: 120 },
         { field: 'ShipCountry', headerText: 'Ship Country', width: 120 },
-        { field: 'ShipRegion', headerText: 'Ship Region', width: 120, type: 'string' },
     ],
     aggregates: [{
         columns: [
