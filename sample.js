@@ -29,20 +29,12 @@ var grid = new ej.grids.Grid({
     // allowPaging: true,
     allowSorting: true,
     allowGrouping: true,
-    // allowResizing: true,
     allowFiltering: true,
     allowPdfExport: true,
-    // allowReordering: true,
-    // allowExcelExport: true,
-    // showColumnChooser: true,
     allowRowDragAndDrop: true,
     filterSettings: { type: 'Excel' },
     selectionSettings: { type: 'Multiple' },
-    rowDrop: function(args) {
-        // debugger;
-    },
     groupSettings: { allowReordering: false },
-    // pageSettings: { pageCount: 5, pageSizes: true },
     editSettings: { allowAdding: true, allowEditing: true, allowDeleting: true },// , mode: 'Dialog'
     toolbar: ['Add', 'Delete', 'Update', 'Cancel', 'Search'],
     columns: [
@@ -133,33 +125,39 @@ var checkBoxObj = new ej.buttons.CheckBox({ label: 'Enable RTL', change: functio
 } });
 checkBoxObj.appendTo('#rtlmode');
 
-var enableChk = new ej.buttons.CheckBox({ label: 'Checkbox column', change: function (args) {
-    if (args.checked) {
-        grid.columns = [
-            { type: 'checkbox', width: 60 },
-            { field: 'OrderID', headerText: 'Order ID', isPrimaryKey: true, textAlign: 'Right', width: 120, validationRules: { required: true } },
-            { field: 'CustomerID', headerText: 'Customer ID', width: 120, editType: 'dropdownedit' },
-            { field: 'Freight', headerText: 'Frieght', width: 120, format: 'C2', editType: 'numericedit', textAlign: 'Right' },
-            { field: 'OrderDate', headerText: 'Order Date', width: 120, format: 'yMd', editType: 'datepickeredit', textAlign: 'Right' },
-            { field: 'ShipCity', headerText: 'Ship City', width: 120, validationRules: { required: true, minLength: 3, maxLength: 20 } },
-            { field: 'ShipName', headerText: 'Ship Name', width: 120, clipMode: 'EllipsisWithTooltip' },
-            { field: 'ShipCountry', headerText: 'Ship Country', width: 120 },
-            { field: 'ShipRegion', headerText: 'Ship Region', width: 120, type: 'string' },
-        ];
-    } else {
-        grid.columns = [
-            { field: 'OrderID', headerText: 'Order ID', isPrimaryKey: true, textAlign: 'Right', width: 120, validationRules: { required: true } },
-            { field: 'CustomerID', headerText: 'Customer ID', width: 120, editType: 'dropdownedit' },
-            { field: 'Freight', headerText: 'Frieght', width: 120, format: 'C2', editType: 'numericedit', textAlign: 'Right' },
-            { field: 'OrderDate', headerText: 'Order Date', width: 120, format: 'yMd', editType: 'datepickeredit', textAlign: 'Right' },
-            { field: 'ShipCity', headerText: 'Ship City', width: 120, validationRules: { required: true, minLength: 3, maxLength: 20 } },
-            { field: 'ShipName', headerText: 'Ship Name', width: 120, clipMode: 'EllipsisWithTooltip' },
-            { field: 'ShipCountry', headerText: 'Ship Country', width: 120 },
-            { field: 'ShipRegion', headerText: 'Ship Region', width: 120, type: 'string' },
-        ];
-
+var enableChk = new ej.buttons.CheckBox({
+    label: 'Checkbox column', change: function (args) {
+        grid.clearSelection();
+        if (args.checked) {
+            grid.setProperties({
+                columns: [
+                    { type: 'checkbox', width: 60 },
+                    { field: 'OrderID', headerText: 'Order ID', isPrimaryKey: true, textAlign: 'Right', width: 120, validationRules: { required: true } },
+                    { field: 'CustomerID', headerText: 'Customer ID', width: 120, editType: 'dropdownedit' },
+                    { field: 'Freight', headerText: 'Frieght', width: 120, format: 'C2', editType: 'numericedit', textAlign: 'Right' },
+                    { field: 'OrderDate', headerText: 'Order Date', width: 120, format: 'yMd', editType: 'datepickeredit', textAlign: 'Right' },
+                    { field: 'ShipCity', headerText: 'Ship City', width: 120, validationRules: { required: true, minLength: 3, maxLength: 20 } },
+                    { field: 'ShipName', headerText: 'Ship Name', width: 120, clipMode: 'EllipsisWithTooltip' },
+                    { field: 'ShipCountry', headerText: 'Ship Country', width: 120 },
+                ]
+            }, true)
+        } else {
+            grid.setProperties({
+                columns: [
+                    { field: 'OrderID', headerText: 'Order ID', isPrimaryKey: true, textAlign: 'Right', width: 120, validationRules: { required: true } },
+                    { field: 'CustomerID', headerText: 'Customer ID', width: 120, editType: 'dropdownedit' },
+                    { field: 'Freight', headerText: 'Frieght', width: 120, format: 'C2', editType: 'numericedit', textAlign: 'Right' },
+                    { field: 'OrderDate', headerText: 'Order Date', width: 120, format: 'yMd', editType: 'datepickeredit', textAlign: 'Right' },
+                    { field: 'ShipCity', headerText: 'Ship City', width: 120, validationRules: { required: true, minLength: 3, maxLength: 20 } },
+                    { field: 'ShipName', headerText: 'Ship Name', width: 120, clipMode: 'EllipsisWithTooltip' },
+                    { field: 'ShipCountry', headerText: 'Ship Country', width: 120 },
+                    { field: 'ShipRegion', headerText: 'Ship Region', width: 120, type: 'string' },
+                ]
+            }, true)
+        }
+        grid.freezeRefresh();
     }
-} });
+});
 enableChk.appendTo('#enableChk');
 
 var enablecache = new ej.buttons.CheckBox({ label: 'Enable Cache', change: function (args) {
