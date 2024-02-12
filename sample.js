@@ -42,7 +42,7 @@ var grid = new ej.grids.Grid({
         { field: 'CustomerID', headerText: 'Customer ID', width: 120, editType: 'dropdownedit' },
         { field: 'Freight', headerText: 'Frieght', width: 120, format: 'C2', editType: 'numericedit', textAlign: 'Right' },
         { field: 'OrderDate', headerText: 'Order Date', width: 120, format: 'yMd', editType: 'datepickeredit', textAlign: 'Right' },
-        { field: 'ShipCity', headerText: 'Ship City', width: 120, template: '<button>${ShipCity}</button>',  validationRules: { required: true, minLength: 3, maxLength: 20 } },
+        { field: 'ShipCity', headerText: 'Ship City', width: 120, template: '<button>${ShipCity}</button>', validationRules: { required: true, minLength: 3, maxLength: 20 } },
         { field: 'ShipName', headerText: 'Ship Name', width: 120 },
         { field: 'ShipCountry', headerText: 'Ship Country', width: 120 },
     ],
@@ -102,7 +102,9 @@ var editMode = new ej.dropdowns.DropDownList({
     width: 100,
     change: function (e) {
         var mode = e.value;
-        grid.editSettings.mode = mode;
+        if (!grid.getDataModule().isRemote()) {
+            grid.editSettings.mode = mode;
+        }
     },
 });
 editMode.appendTo('#editMode');
@@ -120,9 +122,11 @@ var dropDownFilterType = new ej.dropdowns.DropDownList({
 });
 dropDownFilterType.appendTo('#filterType');
 
-var checkBoxObj = new ej.buttons.CheckBox({ label: 'Enable RTL', change: function (e) {
-    grid.enableRtl = e.checked;
-} });
+var checkBoxObj = new ej.buttons.CheckBox({
+    label: 'Enable RTL', change: function (e) {
+        grid.enableRtl = e.checked;
+    }
+});
 checkBoxObj.appendTo('#rtlmode');
 
 var enableChk = new ej.buttons.CheckBox({
@@ -160,57 +164,69 @@ var enableChk = new ej.buttons.CheckBox({
 });
 enableChk.appendTo('#enableChk');
 
-var enablecache = new ej.buttons.CheckBox({ label: 'Enable Cache', change: function (args) {
-    grid.setProperties({
-        filterSettings: {
-            columns: []
-        },
-        groupSettings: { columns : [] },
-        sortSettings: { columns: [] },
-        infiniteScrollSettings: { enableCache : args.checked }
-    }, true);
-    grid.freezeRefresh();
-} });
+var enablecache = new ej.buttons.CheckBox({
+    label: 'Enable Cache', change: function (args) {
+        grid.setProperties({
+            filterSettings: {
+                columns: []
+            },
+            groupSettings: { columns: [] },
+            sortSettings: { columns: [] },
+            infiniteScrollSettings: { enableCache: args.checked }
+        }, true);
+        grid.freezeRefresh();
+    }
+});
 enablecache.appendTo('#enablecache');
 
-var remotedata = new ej.buttons.CheckBox({ label: 'Remote Data', change: function (args) {
-    grid.setProperties({
-        filterSettings: {
-            columns: []
-        },
-        groupSettings: { columns : [] },
-        sortSettings: { columns: [] },
-        dataSource: args.checked ? remoteData : window.orderData
-    }, true);
-    grid.freezeRefresh();
-} });
+var remotedata = new ej.buttons.CheckBox({
+    label: 'Remote Data', change: function (args) {
+        grid.clearSelection();
+        grid.clearGrouping();
+        grid.setProperties({
+            filterSettings: {
+                columns: []
+            },
+            groupSettings: { columns: [], enableLazyLoading: !args.checked },
+            sortSettings: { columns: [] },
+            dataSource: args.checked ? remoteData : window.orderData,
+            toolbar: args.checked ? null : ['Add', 'Delete', 'Update', 'Cancel', 'Search'],
+            editSettings: args.checked ? { allowAdding: false, allowEditing: false, allowDeleting: false } : { allowAdding: true, allowEditing: true, allowDeleting: true },
+        }, true);
+        grid.freezeRefresh();
+    }
+});
 remotedata.appendTo('#remotedata');
 
-var frozen = new ej.buttons.CheckBox({ label: 'Frozen', change: function (args) {
-    grid.setProperties({
-        filterSettings: {
-            columns: []
-        },
-        groupSettings: { columns : [] },
-        sortSettings: { columns: [] },
-        // frozenRows: args.checked ? 2 : undefined,
-        frozenColumns: args.checked ? 2 : undefined
-    }, true);
-    grid.freezeRefresh();
-} });
+var frozen = new ej.buttons.CheckBox({
+    label: 'Frozen', change: function (args) {
+        grid.setProperties({
+            filterSettings: {
+                columns: []
+            },
+            groupSettings: { columns: [] },
+            sortSettings: { columns: [] },
+            // frozenRows: args.checked ? 2 : undefined,
+            frozenColumns: args.checked ? 2 : undefined
+        }, true);
+        grid.freezeRefresh();
+    }
+});
 // frozen.appendTo('#frozen');
 
-var enablelazyload = new ej.buttons.CheckBox({ label: 'Lazy Load', change: function (args) {
-    grid.clearGrouping();
-    grid.setProperties({
-        filterSettings: {
-            columns: []
-        },
-        groupSettings: { columns : [], enableLazyLoading: args.checked },
-        sortSettings: { columns: [] }
-    }, true);
-    grid.freezeRefresh();
-} });
+var enablelazyload = new ej.buttons.CheckBox({
+    label: 'Lazy Load', change: function (args) {
+        grid.clearGrouping();
+        grid.setProperties({
+            filterSettings: {
+                columns: []
+            },
+            groupSettings: { columns: [], enableLazyLoading: grid.getDataModule().isRemote() ? false : args.checked },
+            sortSettings: { columns: [] }
+        }, true);
+        grid.freezeRefresh();
+    }
+});
 enablelazyload.appendTo('#enablelazyload');
 
 var tooltip = new ej.popups.Tooltip({
